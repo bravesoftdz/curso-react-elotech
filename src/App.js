@@ -1,21 +1,52 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import {
+  BrowserRouter,
+  withRouter,
+  Switch,
+  Route,
+  NavLink
+} from "react-router-dom";
+import { Navbar, Nav } from "react-bootstrap";
+import Home from "./Home";
+import Config from "./Config";
 
 class App extends Component {
   render() {
+    console.log("history: ", this.props.history);
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Navbar bg="light" expand="lg">
+          <Navbar.Brand>Elo Twitter</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <NavLink exact className="nav-link" to="/">
+                Home
+              </NavLink>
+              <NavLink exact className="nav-link" to="/configuracao">
+                Configuração
+              </NavLink>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/configuracao" exact component={Config} />
+        </Switch>
       </div>
     );
   }
 }
 
-export default App;
+const AppWithRouter = withRouter(App);
+
+const Router = () => (
+  <BrowserRouter>
+    <AppWithRouter />
+  </BrowserRouter>
+);
+
+export default Router;
