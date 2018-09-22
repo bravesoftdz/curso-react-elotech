@@ -29,6 +29,11 @@ class App extends Component {
                 Configuração
               </NavLink>
             </Nav>
+            <Nav className="justify-content-end" activeKey="/home">
+              <NavLink exact className="nav-link" to="/login">
+                Entrar
+              </NavLink>
+            </Nav>
           </Navbar.Collapse>
         </Navbar>
 
