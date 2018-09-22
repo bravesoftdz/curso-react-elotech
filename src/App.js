@@ -46,11 +46,9 @@ class App extends Component {
   }
 }
 
-const AppWithRouter = withRouter(App);
-
 const Router = () => (
   <BrowserRouter>
-    <AppWithRouter />
+    <App />
   </BrowserRouter>
 );
 
