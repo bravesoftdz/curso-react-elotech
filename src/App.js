@@ -1,54 +1,55 @@
 import React, { Component } from "react";
 import "./App.css";
-import {
-  BrowserRouter,
-  withRouter,
-  Switch,
-  Route,
-  NavLink
-} from "react-router-dom";
-import { Navbar, Nav } from "react-bootstrap";
+import { BrowserRouter, withRouter, Switch, Route } from "react-router-dom";
 import Home from "./Home";
 import Config from "./Config";
+import Header from "./components/Header";
+import Profile from "./components/Profile";
+import Login from "./components/Login";
 
 class App extends Component {
+  state = {
+    logado: false
+  };
+
+  onLogin = event => {
+    this.setState({ logado: true }, () => this.props.history.replace("/"));
+  };
+
+  onLogout = event => {
+    this.setState({ logado: false }, () => this.props.history.replace("/"));
+  };
+
   render() {
-    console.log("history: ", this.props.history);
+    const { logado } = this.state;
 
     return (
       <div className="App">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand>Elo Twitter</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <NavLink exact className="nav-link" to="/">
-                Home
-              </NavLink>
-              <NavLink exact className="nav-link" to="/configuracao">
-                Configuração
-              </NavLink>
-            </Nav>
-            <Nav className="justify-content-end" activeKey="/home">
-              <NavLink exact className="nav-link" to="/login">
-                Entrar
-              </NavLink>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
+        <Header logado={logado} onLogout={this.onLogout} />
 
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/configuracao" exact component={Config} />
-        </Switch>
+        {logado ? (
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/configuracao" exact component={Config} />
+            <Route path="/profile" exact component={Profile} />
+          </Switch>
+        ) : (
+          <Route
+            path="/"
+            exact
+            render={props => <Login {...props} onLogin={this.onLogin} />}
+          />
+        )}
       </div>
     );
   }
 }
 
+const AppWithRouter = withRouter(App);
+
 const Router = () => (
   <BrowserRouter>
-    <App />
+    <AppWithRouter />
   </BrowserRouter>
 );
 
